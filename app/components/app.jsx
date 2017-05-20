@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PrepareChoices from 'components/prepare_choices'
 import RateChoices from 'components/rate_choices'
 import Results from 'components/results'
+import ChangeVotes from 'components/change_votes'
 
 function App(props) {
   switch (props.page) {
@@ -11,6 +12,9 @@ function App(props) {
 
     case 'results':
       return <Results {...props} />;
+
+    case 'change_votes':
+      return <ChangeVotes {...props} />;
 
     case 'choices':
       return (<div>

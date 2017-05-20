@@ -1,7 +1,7 @@
 import React from 'react'
-import { showVoterRatings } from 'components/actions'
-import { RankingsByChoice, buildStats } from 'components/ratings_analyzer'
-import { map, pick } from 'underscore'
+import { showVoterRatings, nextVoter, changeVotes } from 'components/actions'
+import { buildStats } from 'components/ratings_analyzer'
+import { map, pick, size } from 'underscore'
 import { COLORS_BY_RATING } from 'components/ratings'
 
 
@@ -92,6 +92,24 @@ function SummaryGraphics({ stats, choices }) {
 }
 
 
+function VotersList({ ratings, voterNames, dispatch }) {
+  return (<table className="table table-striped table-bordered">
+    <tbody>
+      {map(ratings, function(rating, voterId) {
+        const voterName = voterNames[voterId] || `Électeur #${voterId}`;
+        return (<tr key={voterId}>
+          <td style={{ verticalAlign: 'middle' }}>{voterName}</td>
+          <td>
+            <button className="btn btn-success" onClick={() => dispatch(showVoterRatings(voterId))}>Modifier le vote</button>
+            <button className="btn btn-danger pull-right">Supprimer le vote</button>
+          </td>
+        </tr>);
+      })}
+    </tbody>
+  </table>);
+}
+
+
 export default class Results extends React.Component {
   constructor(props) {
     super(props);
@@ -106,7 +124,7 @@ export default class Results extends React.Component {
         <div className="page-header">
           <h1>
             {stats.winner.choice}
-            <small> est vainqueur avec {Object.keys(this.props.ratings).length} votants</small>
+            <small> est vainqueur avec {size(this.props.ratings)} votants</small>
           </h1>
         </div>
       </div>
@@ -115,11 +133,11 @@ export default class Results extends React.Component {
         <SummaryGraphics stats={stats} choices={this.props.choices} />
 
         <p>
-          <button className="btn btn-default">Modifier les votes</button>&nbsp;
-          <button className="btn btn-default">Modifier les choix</button>&nbsp;
+          <button className="btn btn-primary" onClick={() => this.props.dispatch(nextVoter())}>Ajouter un autre électeur</button>&nbsp;
+          <button className="btn btn-warning" onClick={() => this.props.dispatch(changeVotes())}>Modifier les votes</button>&nbsp;
           {this.state.showDetails
-            ? <button className="btn btn-default" onClick={() => this.setState({ showDetails: false })}>Masquer le détail</button>
-            : <button className="btn btn-default" onClick={() => this.setState({ showDetails: true })}>Afficher le détail</button>}
+            ? <button className="btn btn-info" onClick={() => this.setState({ showDetails: false })}>Masquer le détail</button>
+            : <button className="btn btn-info" onClick={() => this.setState({ showDetails: true })}>Afficher le détail</button>}
         </p>
 
         {this.state.showDetails && <DetailsTables stats={stats} choices={this.props.choices} />}

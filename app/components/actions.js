@@ -6,6 +6,7 @@ export const NEXT_VOTER = 'NEXT_VOTER';
 export const SHOW_RESULTS = 'SHOW_RESULTS';
 export const SHOW_VOTER_RATINGS = 'SHOW_VOTER_RATINGS';
 export const NAME_VOTER = 'NAME_VOTER';
+export const SHOW_CHANGE_VOTES = 'SHOW_CHANGE_VOTES';
 
 export function addChoice(choice) {
   return { type: ADD_CHOICE, choice };
@@ -41,4 +42,8 @@ export function endVote() {
 
 export function nameVoter(voterId, name) {
   return { type: NAME_VOTER, voterId, name };
+}
+
+export function changeVotes() {
+  return { type: SHOW_CHANGE_VOTES };
 }

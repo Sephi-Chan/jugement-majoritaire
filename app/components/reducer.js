@@ -1,4 +1,4 @@
-import { ADD_CHOICE, REMOVE_CHOICE, START_VOTE, RATE_CHOICE, NEXT_VOTER, SHOW_RESULTS, SHOW_VOTER_RATINGS, NAME_VOTER } from 'components/actions'
+import { ADD_CHOICE, REMOVE_CHOICE, START_VOTE, RATE_CHOICE, NEXT_VOTER, SHOW_RESULTS, SHOW_VOTER_RATINGS, NAME_VOTER, SHOW_CHANGE_VOTES } from 'components/actions'
 import { omit } from 'underscore'
 // State shape:
 // state = {
@@ -63,6 +63,7 @@ const callbacks = {
 
   [NEXT_VOTER]: function(state, action) {
     return { ...state,
+      page: 'vote',
       voterId: state.nextVoterId,
       nextVoterId: state.nextVoterId + 1
     }
@@ -86,6 +87,12 @@ const callbacks = {
       voterNames: { ...state.voterNames,
         [action.voterId]: action.name
       }
+    }
+  },
+
+  [SHOW_CHANGE_VOTES]: function(state, action) {
+    return { ...state,
+      page: 'change_votes'
     }
   }
 }
