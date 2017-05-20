@@ -2,17 +2,12 @@ import React from 'react'
 import { showVoterRatings } from 'components/actions'
 import { RankingsByChoice, buildStats } from 'components/ratings_analyzer'
 import { map, pick } from 'underscore'
-
-
-function WinnerName({ name, isWinner }) {
-  if (isWinner) return (<strong>{name} Winner!!!</strong>);
-  return (<span>{name}</span>);
-}
+import { COLORS_BY_RATING } from 'components/ratings'
 
 
 function DetailsTable({ choice, stats, winner }) {
   return (<table className="table">
-    <caption><WinnerName name={choice} isWinner={stats == winner} /></caption>
+    <caption>{choice}</caption>
     <thead>
       <tr>
         <td></td>
@@ -68,25 +63,12 @@ function DetailsTables({ stats, choices }) {
 
 
 function ChoiceBar({ stats }) {
-  return (<div>
-    <h2>{stats.choice} {stats.majorityRating}</h2>
-    <div className="progress">
-      <div className="progress-bar progress-bar-success" style={{ width: `${stats[5].frequency * 100}%` }}>
-        <span className="sr-only">35% Complete (success)</span>
-      </div>
-      <div className="progress-bar progress-bar" style={{ width: `${stats[4].frequency * 100}%` }}>
-        <span className="sr-only">20% Complete (warning)</span>
-      </div>
-      <div className="progress-bar progress-bar-info" style={{ width: `${stats[3].frequency * 100}%` }}>
-        <span className="sr-only">20% Complete (warning)</span>
-      </div>
-      <div className="progress-bar progress-bar-warning" style={{ width: `${stats[2].frequency * 100}%` }}>
-        <span className="sr-only">20% Complete (warning)</span>
-      </div>
-      <div className="progress-bar progress-bar-danger" style={{ width: `${stats[1].frequency * 100}%` }}>
-        <span className="sr-only">10% Complete (danger)</span>
-      </div>
-    </div>
+  return (<div className="progress" style={{ marginBottom: 0 }}>
+    <div className="progress-bar" style={{ width: `${stats[5].frequency * 100}%`, background: COLORS_BY_RATING[5] }} />
+    <div className="progress-bar" style={{ width: `${stats[4].frequency * 100}%`, background: COLORS_BY_RATING[4] }} />
+    <div className="progress-bar" style={{ width: `${stats[3].frequency * 100}%`, background: COLORS_BY_RATING[3] }} />
+    <div className="progress-bar" style={{ width: `${stats[2].frequency * 100}%`, background: COLORS_BY_RATING[2] }} />
+    <div className="progress-bar" style={{ width: `${stats[1].frequency * 100}%`, background: COLORS_BY_RATING[1] }} />
   </div>)
 }
 
@@ -94,22 +76,54 @@ function ChoiceBar({ stats }) {
 function SummaryGraphics({ stats, choices }) {
   const choiceStats = pick(stats, Object.keys(choices));
 
-  return (<div>
-    {map(choiceStats, function(choiceStats, choice) {
-      return (<ChoiceBar key={choice} choice={choice} stats={choiceStats} winner={stats.winner} />);
-    })}
+  return (<div style={{ position: 'relative' }}>
+    <div style={{ position: 'absolute', width: '2px', height: 'calc(100% + 10px)', marginTop: '-5px', background: 'green', left: '60%' }} />
+    <table className="table table-bordered table-striped">
+      <tbody>
+        {map(choiceStats, function(choiceStats, choice) {
+          return (<tr key={choice}>
+            <td style={{ width: '20%' }}>{choice}</td>
+            <td><ChoiceBar choice={choice} stats={choiceStats} winner={stats.winner} /></td>
+          </tr>);
+        })}
+      </tbody>
+    </table>
   </div>);
 }
 
 
-export default function Results({ ratings, choices }) {
-  const stats = buildStats(ratings);
+export default class Results extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { showDetails: false };
+  }
 
-  return (<div className="container">
-    <h2>Résultats ({Object.keys(ratings).length} votants)</h2>
+  render() {
+    const stats = buildStats(this.props.ratings);
 
-    <SummaryGraphics stats={stats} choices={choices} />
+    return (<div>
+      <div className="container">
+        <div className="page-header">
+          <h1>
+            {stats.winner.choice}
+            <small> est vainqueur avec {Object.keys(this.props.ratings).length} votants</small>
+          </h1>
+        </div>
+      </div>
 
-    <DetailsTables stats={stats} choices={choices} />
-  </div>);
+      <div className="container">
+        <SummaryGraphics stats={stats} choices={this.props.choices} />
+
+        <p>
+          <button className="btn btn-default">Modifier les votes</button>&nbsp;
+          <button className="btn btn-default">Modifier les choix</button>&nbsp;
+          {this.state.showDetails
+            ? <button className="btn btn-default" onClick={() => this.setState({ showDetails: false })}>Masquer le détail</button>
+            : <button className="btn btn-default" onClick={() => this.setState({ showDetails: true })}>Afficher le détail</button>}
+        </p>
+
+        {this.state.showDetails && <DetailsTables stats={stats} choices={this.props.choices} />}
+      </div>
+      </div>);
+  }
 }

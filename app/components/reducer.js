@@ -1,4 +1,4 @@
-import { ADD_CHOICE, REMOVE_CHOICE, START_VOTE, RATE_CHOICE, NEXT_VOTER, SHOW_RESULTS, SHOW_VOTER_RATINGS } from 'components/actions'
+import { ADD_CHOICE, REMOVE_CHOICE, START_VOTE, RATE_CHOICE, NEXT_VOTER, SHOW_RESULTS, SHOW_VOTER_RATINGS, NAME_VOTER } from 'components/actions'
 import { omit } from 'underscore'
 // State shape:
 // state = {
@@ -12,14 +12,19 @@ import { omit } from 'underscore'
 //   ratings: {
 //     1: { 'Macron': 3, 'Fillon': 1, 'Asselineau': 1 }
 //     2: { 'Macron': 1, 'Fillon': 1, 'Asselineau': 6 }
+//   },
+//   voterNames: {
+//     1: "Sephi-Chan"
 //   }
 // }
 
 
 const initialState = {
+  page: 'choices',
   nextVoterId: 1,
   choices: {},
-  ratings: {}
+  ratings: {},
+  voterNames: {}
 };
 
 
@@ -40,7 +45,7 @@ const callbacks = {
 
   [START_VOTE]: function(state, action) {
     return { ...state,
-      screen: 'vote',
+      page: 'vote',
       voterId: state.nextVoterId,
       nextVoterId: state.nextVoterId + 1
     }
@@ -65,14 +70,22 @@ const callbacks = {
 
   [SHOW_RESULTS]: function(state, action) {
     return { ...state,
-      screen: 'results'
+      page: 'results'
     }
   },
 
   [SHOW_VOTER_RATINGS]: function(state, action) {
     return { ...state,
-      screen: 'vote',
+      page: 'vote',
       voterId: action.voterId
+    }
+  },
+
+  [NAME_VOTER]: function(state, action) {
+    return { ...state,
+      voterNames: { ...state.voterNames,
+        [action.voterId]: action.name
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { addChoice, removeChoice, startVote } from 'components/actions'
-import { map } from 'underscore'
+import { map, size } from 'underscore'
 
 
 class Choice extends React.Component {
@@ -15,15 +15,15 @@ class Choice extends React.Component {
 
   render() {
     return (<tr>
-      <td>{this.props.choice}</td>
-      <td><button onClick={this.handleClick}>supprimer</button></td>
+      <td style={{ verticalAlign: 'middle' }}>{this.props.choice}</td>
+      <td><button className="btn btn-danger" onClick={this.handleClick}>Supprimer</button></td>
     </tr>);
   }
 }
 
 
 function ChoicesList({ choices, dispatch }) {
-  return (<table>
+  return (<table className="table table-striped table-bordered">
     <tbody>
       {map(choices, function(choice){
         return (<Choice key={choice} {...{ choice, dispatch }}>{choice}</Choice>);
@@ -70,16 +70,28 @@ export default class PrepareChoices extends React.Component {
 
 
   render() {
-    return (<div>
-      <h2>Ajouter des choix</h2>
+    const enableStartButton = 1 < size(this.props.choices);
 
-      <ChoicesList {...this.props} />
+    return (<div className="container">
+      <div className="panel panel-default">
+        <div className="panel-heading">Ajouter des choix</div>
+        <div className="panel-body">
+          <form className="form-horizontal" onSubmit={this.handleSubmit}>
+            <div className="input-group">
+              <input className="form-control" value={this.state.choice} onChange={this.handleChange} ref={(el) => this.choiceInput = el} />
+              <span className="input-group-btn">
+                <button className="btn btn-primary">Ajouter ce choix</button>
+              </span>
+            </div>
+          </form>
 
-      <form onSubmit={this.handleSubmit}>
-        <input value={this.state.choice} onChange={this.handleChange} ref={(el) => this.choiceInput = el} />
-        &nbsp;
-        <button>Ajouter ce choix</button> <button onClick={this.handleStart}>Commencer le vote</button>
-      </form>
+          <br />
+          <ChoicesList {...this.props} />
+        </div>
+        <div className="panel-footer">
+          <button className="btn btn-success" onClick={this.handleStart} disabled={!enableStartButton}>Commencer le vote</button>
+        </div>
+      </div>
     </div>);
   }
 }

@@ -1,4 +1,4 @@
-import { reduce, each, sortBy, where, max, map } from 'underscore'
+import { reduce, each, sortBy, where, max, map, size } from 'underscore'
 import { RATINGS, RATING_BY_VALUE } from 'components/ratings'
 
 
@@ -20,8 +20,7 @@ function prepareTable(ratings) {
 
 function selectWinner(table) {
   const sortedTable = sortBy(table, 'majorityRating').reverse();
-  console.log(sortedTable, map(sortedTable, (a) => `${a.choice} ${a.majorityRating}`));
-  const winnerRating = sortedTable[0].majorityRating;
+  const winnerRating = sortedTable[0] ? sortedTable[0].majorityRating : null;
   const winners = where(table, { majorityRating: winnerRating });
   return max(winners, (winner) => winner[winnerRating].cumulativeFrequency);
 }
