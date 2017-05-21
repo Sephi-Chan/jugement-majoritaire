@@ -123,8 +123,8 @@ export default class Results extends React.Component {
       <div className="container">
         <div className="page-header">
           <h1>
-            {stats.winner.choice}
-            <small> est vainqueur avec {size(this.props.ratings)} votants</small>
+            {stats.winner ? stats.winner : 'Aucun vainqueur'}
+            {stats.winner && <small> est vainqueur avec {size(this.props.ratings)} votants</small>}
           </h1>
         </div>
       </div>

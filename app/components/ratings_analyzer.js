@@ -1,5 +1,5 @@
-import { reduce, each, sortBy, where, max, map, size } from 'underscore'
-import { RATINGS, RATING_BY_VALUE } from 'components/ratings'
+import { reduce, each, sortBy, where, max, size, filter, map } from 'underscore'
+import { RATINGS } from 'components/ratings'
 
 
 function prepareTable(ratings) {
@@ -18,16 +18,43 @@ function prepareTable(ratings) {
 }
 
 
+// Return the winning choice.
 function selectWinner(table) {
   const sortedTable = sortBy(table, 'majorityRating').reverse();
-  const winnerRating = sortedTable[0] ? sortedTable[0].majorityRating : null;
-  const winners = where(table, { majorityRating: winnerRating });
-  return max(winners, (winner) => winner[winnerRating].cumulativeFrequency);
+  const winnerMention = sortedTable[0] ? sortedTable[0].majorityRating : null;
+  const winnerRows = where(table, { majorityRating: winnerMention });
+
+  if (winnerRows.length == 1) {
+    return winnerRows[0].choice;
+  }
+  else { // Many choices with the best mention. Find the one having the winning mention with the highest cumulative frequency.
+    const cumulativeFrequencies = map(winnerRows, (row) => row[winnerMention].cumulativeFrequency);
+    console.log(cumulativeFrequencies, winnerRows);
+    const maxCumulativeFrequency = max(cumulativeFrequencies);
+    const bisWinnerRows = filter(winnerRows, (row) => row[winnerMention].cumulativeFrequency == maxCumulativeFrequency);
+
+    if (bisWinnerRows.length == 1) {
+      console.log("FFFF");
+      return bisWinnerRows[0].choice;
+    }
+    else { // Many choices have the max cumulative frequency. Find the one with most votes over the winning mention.
+      const cumulativeSizes = map(bisWinnerRows, (row) => row[winnerMention + 1].cumulativeSize);
+      const maxCumulativeSize = max(cumulativeSizes);
+      const terWinnerRows = filter(bisWinnerRows, (row) => row[winnerMention + 1].cumulativeSize == maxCumulativeSize);
+
+      if (terWinnerRows.length == 1) {
+        return terWinnerRows[0].choice;
+      }
+      else { // Fuck you.
+        return null;
+      }
+    }
+  }
 }
 
 
 export function buildStats(ratings) {
-  const totalSize = Object.keys(ratings).length
+  const totalSize = size(ratings);
   const table = prepareTable(ratings);
   const firstRating = Object.values(ratings)[0];
 
@@ -38,11 +65,13 @@ export function buildStats(ratings) {
     })
   });
 
-  // Fill cumulative frequencies.
+  // Fill cumulative sizes and frequencies.
   each(firstRating, function(_rating, choice){
     each(RATINGS, function(value, _label) {
       const previousCumulativeFrequency = table[choice][value + 1] ? table[choice][value + 1].cumulativeFrequency : 0;
       table[choice][value].cumulativeFrequency = table[choice][value].frequency + previousCumulativeFrequency
+      const previousCumulativeSize = table[choice][value + 1] ? table[choice][value + 1].cumulativeSize : 0;
+      table[choice][value].cumulativeSize = table[choice][value].size + previousCumulativeSize
     });
   });
 
