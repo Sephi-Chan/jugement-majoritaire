@@ -1,5 +1,5 @@
 import React from 'react'
-import { showVoterRatings, nextVoter, changeVotes } from 'components/actions'
+import { showVoterRatings, nextVoter, changeVotes, startOver } from 'components/actions'
 import { buildStats } from 'components/ratings_analyzer'
 import { map, pick, size } from 'underscore'
 import { COLORS_BY_RATING } from 'components/ratings'
@@ -138,6 +138,7 @@ export default class Results extends React.Component {
           {this.state.showDetails
             ? <button className="btn btn-info" onClick={() => this.setState({ showDetails: false })}>Masquer le détail</button>
             : <button className="btn btn-info" onClick={() => this.setState({ showDetails: true })}>Afficher le détail</button>}
+          <button className="btn btn-danger pull-right" onClick={() => this.props.dispatch(startOver())}>Recommencer</button>
         </p>
 
         {this.state.showDetails && <DetailsTables stats={stats} choices={this.props.choices} />}
