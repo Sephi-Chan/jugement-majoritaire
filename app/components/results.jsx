@@ -92,24 +92,6 @@ function SummaryGraphics({ stats, choices }) {
 }
 
 
-function VotersList({ ratings, names, dispatch }) {
-  return (<table className="table table-striped table-bordered">
-    <tbody>
-      {map(ratings, function(rating, voterId) {
-        const voterName = names[voterId] || `Électeur #${voterId}`;
-        return (<tr key={voterId}>
-          <td style={{ verticalAlign: 'middle' }}>{voterName}</td>
-          <td>
-            <button className="btn btn-success" onClick={() => dispatch(showVoterRatings(voterId))}>Modifier le vote</button>
-            <button className="btn btn-danger pull-right">Supprimer le vote</button>
-          </td>
-        </tr>);
-      })}
-    </tbody>
-  </table>);
-}
-
-
 export default class Results extends React.Component {
   constructor(props) {
     super(props);

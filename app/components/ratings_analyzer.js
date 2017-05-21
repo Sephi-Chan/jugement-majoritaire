@@ -29,12 +29,10 @@ function selectWinner(table) {
   }
   else { // Many choices with the best mention. Find the one having the winning mention with the highest cumulative frequency.
     const cumulativeFrequencies = map(winnerRows, (row) => row[winnerMention].cumulativeFrequency);
-    console.log(cumulativeFrequencies, winnerRows);
     const maxCumulativeFrequency = max(cumulativeFrequencies);
     const bisWinnerRows = filter(winnerRows, (row) => row[winnerMention].cumulativeFrequency == maxCumulativeFrequency);
 
     if (bisWinnerRows.length == 1) {
-      console.log("FFFF");
       return bisWinnerRows[0].choice;
     }
     else { // Many choices have the max cumulative frequency. Find the one with most votes over the winning mention.
