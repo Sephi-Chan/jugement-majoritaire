@@ -1,11 +1,10 @@
 export const ADD_CHOICE = 'ADD_CHOICE';
 export const REMOVE_CHOICE = 'REMOVE_CHOICE';
 export const START_VOTE = 'START_VOTE';
-export const RATE_CHOICE = 'RATE_CHOICE';
+export const VOTE = 'VOTE';
 export const NEXT_VOTER = 'NEXT_VOTER';
 export const SHOW_RESULTS = 'SHOW_RESULTS';
 export const SHOW_VOTER_RATINGS = 'SHOW_VOTER_RATINGS';
-export const NAME_VOTER = 'NAME_VOTER';
 export const SHOW_CHANGE_VOTES = 'SHOW_CHANGE_VOTES';
 
 export function addChoice(choice) {
@@ -24,8 +23,8 @@ export function nextVoter() {
   return { type: NEXT_VOTER };
 }
 
-export function rateChoice(voterId, choice, rating) {
-  return { type: RATE_CHOICE, voterId, choice, rating };
+export function vote(voterId, vote, name) {
+  return { type: VOTE, voterId, vote, name };
 }
 
 export function showResults() {
@@ -33,15 +32,11 @@ export function showResults() {
 }
 
 export function showVoterRatings(voterId) {
-  return { type: SHOW_VOTER_RATINGS, voterId };
+  return { type: SHOW_VOTER_RATINGS, voterId: parseInt(voterId) };
 }
 
 export function endVote() {
   return { type: END_VOTE };
-}
-
-export function nameVoter(voterId, name) {
-  return { type: NAME_VOTER, voterId, name };
 }
 
 export function changeVotes() {

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import App from 'components/app'
 import reducer from 'components/reducer'
-import { addChoice, removeChoice, startVote, rateChoice, showResults, nextVoter, nameVoter } from 'components/actions'
+import { addChoice, removeChoice, startVote, vote, showResults, nextVoter } from 'components/actions'
 
 document.addEventListener('DOMContentLoaded', function() {
   const devtools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
@@ -14,36 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // store.dispatch(addChoice('Fillon'));
   // store.dispatch(addChoice('Asselineau'));
   // store.dispatch(addChoice('Mélenchon'));
-  //
   // store.dispatch(startVote());
-  //
-  // store.dispatch(rateChoice(1, 'Macron', 3));
-  // store.dispatch(rateChoice(1, 'Fillon', 1));
-  // store.dispatch(rateChoice(1, 'Asselineau', 5));
-  // store.dispatch(nameVoter(1, 'Sephi-Chan'));
-  // store.dispatch(rateChoice(1, 'Mélenchon', 3));
+  // store.dispatch(vote(1, { Macron: 1, Fillon: 2, Asselineau: 5, Mélenchon: 4 }, 'Corwin'));
+  // store.dispatch(vote(2, { Macron: 3, Fillon: 4, Asselineau: 1, Mélenchon: 1 }, 'Mandor'));
+  // store.dispatch(vote(3, { Macron: 3, Fillon: 3, Asselineau: 2, Mélenchon: 5 }, 'Random'));
+  // store.dispatch(vote(4, { Macron: 3, Fillon: 3, Asselineau: 1, Mélenchon: 1 }));
+  // store.dispatch(vote(5, { Macron: 3, Fillon: 5, Asselineau: 1, Mélenchon: 1 }));
   // store.dispatch(nextVoter());
-  //
-  // store.dispatch(rateChoice(2, 'Macron', 2));
-  // store.dispatch(rateChoice(2, 'Fillon', 4));
-  // store.dispatch(rateChoice(2, 'Asselineau', 2));
-  // store.dispatch(rateChoice(2, 'Mélenchon', 1));
-  //
-  // store.dispatch(rateChoice(3, 'Macron', 5));
-  // store.dispatch(rateChoice(3, 'Fillon', 4));
-  // store.dispatch(rateChoice(3, 'Asselineau', 2));
-  // store.dispatch(rateChoice(3, 'Mélenchon', 4));
-  //
-  // store.dispatch(rateChoice(4, 'Macron', 4));
-  // store.dispatch(rateChoice(4, 'Fillon', 4));
-  // store.dispatch(rateChoice(4, 'Asselineau', 5));
-  // store.dispatch(rateChoice(4, 'Mélenchon', 1));
-  //
-  // store.dispatch(rateChoice(5, 'Macron', 1));
-  // store.dispatch(rateChoice(5, 'Fillon', 4));
-  // store.dispatch(rateChoice(5, 'Asselineau', 4));
-  // store.dispatch(rateChoice(5, 'Mélenchon', 2));
-  //
   // store.dispatch(showResults());
 
   render(

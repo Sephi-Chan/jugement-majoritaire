@@ -3,11 +3,11 @@ import { showVoterRatings, nextVoter, showResults } from 'components/actions'
 import { map } from 'underscore'
 
 
-function VotersList({ ratings, voterNames, dispatch }) {
+function VotersList({ ratings, names, dispatch }) {
   return (<table className="table table-striped table-bordered">
     <tbody>
       {map(ratings, function(rating, voterId) {
-        const voterName = voterNames[voterId] || `Électeur #${voterId}`;
+        const voterName = names[voterId] || `Électeur #${voterId}`;
         return (<tr key={voterId}>
           <td style={{ verticalAlign: 'middle' }}>{voterName}</td>
           <td>
@@ -27,7 +27,7 @@ export default function ChangeVotes(props) {
     <div className="panel panel-default">
       <div className="panel-heading">Modifier les votes</div>
       <div className="panel-body">
-        <VotersList ratings={props.ratings} voterNames={props.voterNames} dispatch={props.dispatch} />
+        <VotersList ratings={props.ratings} names={props.names} dispatch={props.dispatch} />
       </div>
       <div className="panel-footer">
         <button className="btn btn-primary" onClick={() => props.dispatch(nextVoter())}>Ajouter un autre électeur</button>&nbsp;

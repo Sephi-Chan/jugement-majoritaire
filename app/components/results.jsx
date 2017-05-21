@@ -92,11 +92,11 @@ function SummaryGraphics({ stats, choices }) {
 }
 
 
-function VotersList({ ratings, voterNames, dispatch }) {
+function VotersList({ ratings, names, dispatch }) {
   return (<table className="table table-striped table-bordered">
     <tbody>
       {map(ratings, function(rating, voterId) {
-        const voterName = voterNames[voterId] || `Électeur #${voterId}`;
+        const voterName = names[voterId] || `Électeur #${voterId}`;
         return (<tr key={voterId}>
           <td style={{ verticalAlign: 'middle' }}>{voterName}</td>
           <td>
