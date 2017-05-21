@@ -1,5 +1,5 @@
 import React from 'react'
-import { showVoterRatings, nextVoter, showResults } from 'components/actions'
+import { showVoterRatings, nextVoter, showResults, removeVote } from 'components/actions'
 import { map } from 'underscore'
 
 
@@ -12,7 +12,7 @@ function VotersList({ ratings, names, dispatch }) {
           <td style={{ verticalAlign: 'middle' }}>{voterName}</td>
           <td>
             <button className="btn btn-primary" onClick={() => dispatch(showVoterRatings(voterId))}>Modifier le vote</button>
-            <button className="btn btn-danger pull-right">Supprimer le vote</button>
+            <button className="btn btn-danger pull-right" onClick={() => dispatch(removeVote(voterId))}>Supprimer le vote</button>
           </td>
         </tr>);
       })}

@@ -1,4 +1,4 @@
-import { ADD_CHOICE, REMOVE_CHOICE, START_VOTE, VOTE, NEXT_VOTER, SHOW_RESULTS, SHOW_VOTER_RATINGS, NAME_VOTER, SHOW_CHANGE_VOTES, START_OVER } from 'components/actions'
+import { ADD_CHOICE, REMOVE_CHOICE, START_VOTE, VOTE, NEXT_VOTER, SHOW_RESULTS, SHOW_VOTER_RATINGS, NAME_VOTER, SHOW_CHANGE_VOTES, START_OVER, REMOVE_VOTE } from 'components/actions'
 import { omit } from 'underscore'
 // State shape:
 // state = {
@@ -95,6 +95,12 @@ const callbacks = {
 
   [START_OVER]: function(state, action) {
     return { ...initialState }
+  },
+
+  [REMOVE_VOTE]: function(state, action) {
+    return { ...state,
+      ratings: omit(state.ratings, action.voterId)
+    }
   }
 }
 

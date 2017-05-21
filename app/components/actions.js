@@ -7,6 +7,8 @@ export const SHOW_RESULTS = 'SHOW_RESULTS';
 export const SHOW_VOTER_RATINGS = 'SHOW_VOTER_RATINGS';
 export const SHOW_CHANGE_VOTES = 'SHOW_CHANGE_VOTES';
 export const START_OVER = 'START_OVER';
+export const REMOVE_VOTE = 'REMOVE_VOTE';
+
 
 export function addChoice(choice) {
   return { type: ADD_CHOICE, choice };
@@ -46,4 +48,8 @@ export function changeVotes() {
 
 export function startOver() {
   return { type: START_OVER };
+}
+
+export function removeVote(voterId) {
+  return { type: REMOVE_VOTE, voterId: parseInt(voterId) };
 }
