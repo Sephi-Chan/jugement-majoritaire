@@ -11,7 +11,7 @@
     "deploy": "npm run build && scp -qr public/. sephichan@ssh-sephichan.alwaysdata.net:~/www/jm"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "chart.js": "^2.5.0",
     "react": "^15.4",
     "react-dom": "^15.4",
