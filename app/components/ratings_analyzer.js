@@ -1,4 +1,4 @@
-import { reduce, each, sortBy, where, max, size, filter, map } from 'underscore'
+import { reduce, each, sortBy, where, max, size, filter, map, range } from 'underscore'
 import { RATINGS } from 'components/ratings'
 
 
@@ -35,17 +35,24 @@ function selectWinner(table) {
     if (bisWinnerRows.length == 1) {
       return bisWinnerRows[0].choice;
     }
-    else { // Many choices have the max cumulative frequency. Find the one with most votes over the winning mention.
-      const cumulativeSizes = map(bisWinnerRows, (row) => row[winnerMention + 1].cumulativeSize);
-      const maxCumulativeSize = max(cumulativeSizes);
-      const terWinnerRows = filter(bisWinnerRows, (row) => row[winnerMention + 1].cumulativeSize == maxCumulativeSize);
+    else { // Many choices have the max cumulative frequency.
+      // Find the one with most votes over the winning mention, continuing toward the best mention if needed.
+      // If it's still not enough, reiterate toward the worst mention from under the winning mention.
+      const betterMentions = range(winnerMention + 1, 6, +1);
+      const lesserMentions = range(winnerMention - 1, 0, -1);
 
-      if (terWinnerRows.length == 1) {
-        return terWinnerRows[0].choice;
-      }
-      else { // Fuck you.
-        return null;
-      }
+      return reduce(betterMentions.concat(lesserMentions), function(winner, mention) {
+        const cumulativeSizes = map(bisWinnerRows, (row) => row[mention].cumulativeSize);
+        const maxCumulativeSize = max(cumulativeSizes);
+        const terWinnerRows = filter(bisWinnerRows, (row) => row[mention].cumulativeSize == maxCumulativeSize);
+
+        if (!winner && terWinnerRows.length == 1) {
+          return terWinnerRows[0].choice;
+        }
+        else {
+          return winner;
+        }
+      }, null);
     }
   }
 }

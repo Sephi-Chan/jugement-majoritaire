@@ -57,6 +57,24 @@ document.addEventListener('DOMContentLoaded', function() {
   // store.dispatch(nextVoter());
   // store.dispatch(showResults());
 
+
+  // Test case to chose a victor in case of tie (A should win).
+  // store.dispatch(addChoice('A'));
+  // store.dispatch(addChoice('B'));
+  // store.dispatch(startVote());
+  // store.dispatch(vote(1, { A: 1, B: 1 }));
+  // store.dispatch(vote(2, { A: 2, B: 2 }));
+  // store.dispatch(vote(3, { A: 3, B: 3 }));
+  // store.dispatch(vote(4, { A: 3, B: 3 }));
+  // store.dispatch(vote(5, { A: 3, B: 3 }));
+  // store.dispatch(vote(6, { A: 3, B: 3 }));
+  // store.dispatch(vote(7, { A: 4, B: 4 }));
+  // store.dispatch(vote(8, { A: 5, B: 5 }));
+  // store.dispatch(vote(9, { A: 1, B: 2 }));
+  // store.dispatch(vote(10, { A: 5, B: 4 }));
+  // store.dispatch(nextVoter());
+  // store.dispatch(showResults());
+
   render(
     <Provider store={store}><App /></Provider>,
     document.getElementById('app')
