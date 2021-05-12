@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "chart.js": "^2.5.0",
+    "chart.js": "^2.9.4",
     "react": "^15.4",
     "react-dom": "^15.4",
     "react-redux": "^5.0.4",
